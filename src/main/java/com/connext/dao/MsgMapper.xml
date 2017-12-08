@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.connext.dao.MsgMapper" >
+  <resultMap id="BaseResultMap" type="com.connext.pojo.Msg" >
+    <id column="msgid" property="msgid" jdbcType="INTEGER" />
+    <result column="msgtitle" property="msgtitle" jdbcType="VARCHAR" />
+    <result column="msgdate" property="msgdate" jdbcType="TIMESTAMP" />
+    <result column="msgcontent" property="msgcontent" jdbcType="VARCHAR" />
+    <result column="msguser" property="msguser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    msgid, msgtitle, msgdate, msgcontent, msguser
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.connext.pojo.MsgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from msg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from msg
+    where msgid = #{msgid,jdbcType=INTEGER}
+  </select>
+    <select id="selectByMsguser" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from msg
+    where msguser = #{msguser,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from msg
+    where msgid = #{msgid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.connext.pojo.MsgExample" >
+    delete from msg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.connext.pojo.Msg" >
+    insert into msg (msgid, msgtitle, msgdate, 
+      msgcontent, msguser)
+    values (#{msgid,jdbcType=INTEGER}, #{msgtitle,jdbcType=VARCHAR}, #{msgdate,jdbcType=TIMESTAMP}, 
+      #{msgcontent,jdbcType=VARCHAR}, #{msguser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.connext.pojo.Msg" >
+    insert into msg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="msgid != null" >
+        msgid,
+      </if>
+      <if test="msgtitle != null" >
+        msgtitle,
+      </if>
+      <if test="msgdate != null" >
+        msgdate,
+      </if>
+      <if test="msgcontent != null" >
+        msgcontent,
+      </if>
+      <if test="msguser != null" >
+        msguser,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="msgid != null" >
+        #{msgid,jdbcType=INTEGER},
+      </if>
+      <if test="msgtitle != null" >
+        #{msgtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="msgdate != null" >
+        #{msgdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgcontent != null" >
+        #{msgcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="msguser != null" >
+        #{msguser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.connext.pojo.MsgExample" resultType="java.lang.Integer" >
+    select count(*) from msg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update msg
+    <set >
+      <if test="record.msgid != null" >
+        msgid = #{record.msgid,jdbcType=INTEGER},
+      </if>
+      <if test="record.msgtitle != null" >
+        msgtitle = #{record.msgtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgdate != null" >
+        msgdate = #{record.msgdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.msgcontent != null" >
+        msgcontent = #{record.msgcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msguser != null" >
+        msguser = #{record.msguser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update msg
+    set msgid = #{record.msgid,jdbcType=INTEGER},
+      msgtitle = #{record.msgtitle,jdbcType=VARCHAR},
+      msgdate = #{record.msgdate,jdbcType=TIMESTAMP},
+      msgcontent = #{record.msgcontent,jdbcType=VARCHAR},
+      msguser = #{record.msguser,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.connext.pojo.Msg" >
+    update msg
+    <set >
+      <if test="msgtitle != null" >
+        msgtitle = #{msgtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="msgdate != null" >
+        msgdate = #{msgdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgcontent != null" >
+        msgcontent = #{msgcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="msguser != null" >
+        msguser = #{msguser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where msgid = #{msgid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.connext.pojo.Msg" >
+    update msg
+    set msgtitle = #{msgtitle,jdbcType=VARCHAR},
+      msgdate = #{msgdate,jdbcType=TIMESTAMP},
+      msgcontent = #{msgcontent,jdbcType=VARCHAR},
+      msguser = #{msguser,jdbcType=VARCHAR}
+    where msgid = #{msgid,jdbcType=INTEGER}
+  </update>
+</mapper>
